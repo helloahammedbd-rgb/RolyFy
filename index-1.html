@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RolyFy - Find. Click. Save.</title>
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --primary: #16a34a;
+      --primary-dark: #15803d;
+      --bg: #f7faf8;
+      --card: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+    }
+
+    body.dark {
+      --bg: #111827;
+      --card: #1f2937;
+      --text: #f9fafb;
+      --muted: #9ca3af;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: 0.3s;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 7%;
+      background: var(--card);
+      box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: bold;
+      color: var(--primary);
+    }
+
+    .nav-links { display: flex; gap: 20px; }
+
+    .nav-links a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .nav-links a:hover { color: var(--primary); }
+
+    button { border: none; cursor: pointer; }
+
+    .dark-btn {
+      background: var(--primary);
+      color: white;
+      padding: 10px 14px;
+      border-radius: 8px;
+    }
+
+    .hero {
+      min-height: 85vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 50px 20px;
+      background: radial-gradient(circle at top right, rgba(22,163,74,.18), transparent 35%);
+    }
+
+    .hero-content {
+      max-width: 850px;
+      animation: fadeUp 1s ease;
+    }
+
+    .hero h1 {
+      font-size: clamp(42px, 8vw, 80px);
+      margin-bottom: 15px;
+    }
+
+    .hero h1 span { color: var(--primary); }
+
+    .hero p {
+      font-size: 20px;
+      color: var(--muted);
+      margin-bottom: 30px;
+    }
+
+    .search-box {
+      display: flex;
+      max-width: 600px;
+      margin: auto;
+      background: var(--card);
+      padding: 8px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.1);
+    }
+
+    .search-box input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 15px;
+      background: transparent;
+      color: var(--text);
+      font-size: 16px;
+    }
+
+    .search-box button {
+      background: var(--primary);
+      color: white;
+      padding: 0 25px;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    section { padding: 80px 7%; }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 35px;
+    }
+
+    .section-title span { color: var(--primary); }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 25px;
+    }
+
+    .product-card {
+      background: var(--card);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 5px 20px rgba(0,0,0,.08);
+      transition: 0.3s;
+    }
+
+    .product-card:hover { transform: translateY(-10px); }
+
+    .product-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .product-info { padding: 20px; }
+    .product-info h3 { margin-bottom: 10px; }
+
+    .price {
+      font-size: 18px;
+      color: var(--primary);
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    .old-price {
+      text-decoration: line-through;
+      color: var(--muted);
+      font-size: 14px;
+      margin-left: 8px;
+    }
+
+    .deal-btn {
+      display: block;
+      text-align: center;
+      text-decoration: none;
+      background: var(--primary);
+      color: white;
+      padding: 12px;
+      border-radius: 8px;
+    }
+
+    .deal-btn:hover { background: var(--primary-dark); }
+
+    .categories {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 20px;
+    }
+
+    .category {
+      background: var(--card);
+      padding: 30px 20px;
+      text-align: center;
+      border-radius: 15px;
+      font-size: 18px;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .category:hover {
+      transform: scale(1.05);
+      color: var(--primary);
+    }
+
+    .why {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 25px;
+    }
+
+    .why-card {
+      background: var(--card);
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+    }
+
+    .why-card h3 {
+      margin-bottom: 10px;
+      color: var(--primary);
+    }
+
+    .newsletter {
+      background: var(--primary);
+      color: white;
+      text-align: center;
+      border-radius: 20px;
+      padding: 50px 20px;
+    }
+
+    .newsletter input {
+      padding: 14px;
+      width: min(300px, 80%);
+      border: none;
+      border-radius: 8px;
+      margin: 15px 5px;
+    }
+
+    .newsletter button {
+      padding: 14px 25px;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+
+    footer {
+      background: #0f172a;
+      color: white;
+      text-align: center;
+      padding: 30px;
+    }
+
+    #topBtn {
+      display: none;
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      background: var(--primary);
+      color: white;
+      padding: 14px;
+      border-radius: 50%;
+      font-size: 18px;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media(max-width: 700px) {
+      nav { padding: 15px 5%; }
+      .nav-links { display: none; }
+      section { padding: 60px 5%; }
+      .hero { min-height: 75vh; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <div class="logo">RolyFy</div>
+    <div class="nav-links">
+      <a href="#home">Home</a>
+      <a href="#deals">Deals</a>
+      <a href="#categories">Categories</a>
+      <a href="#about">About</a>
+    </div>
+    <button class="dark-btn" onclick="toggleDark()">🌙</button>
+  </nav>
+
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <h1>Find. Click. <span>Save.</span></h1>
+      <p>Discover trending products and amazing deals with RolyFy.</p>
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search for products..." onkeyup="searchProducts()">
+        <button onclick="searchProducts()">Search</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="deals">
+    <h2 class="section-title">🔥 Featured <span>Deals</span></h2>
+
+    <div class="products" id="productList">
+
+      <div class="product-card" data-name="Wireless Headphones">
+        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80" alt="Wireless Headphones">
+        <div class="product-info">
+          <h3>Wireless Headphones</h3>
+          <div class="price">$29 <span class="old-price">$49</span></div>
+          <a href="#" target="_blank" class="deal-btn">View Deal</a>
+        </div>
+      </div>
+
+      <div class="product-card" data-name="Smart Watch">
+        <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80" alt="Smart Watch">
+        <div class="product-info">
+          <h3>Smart Watch</h3>
+          <div class="price">$39 <span class="old-price">$69</span></div>
+          <a href="#" target="_blank" class="deal-btn">View Deal</a>
+        </div>
+      </div>
+
+      <div class="product-card" data-name="Gaming Mouse">
+        <img src="https://images.unsplash.com/photo-1527814050087-3793815479db?auto=format&fit=crop&w=800&q=80" alt="Gaming Mouse">
+        <div class="product-info">
+          <h3>Gaming Mouse</h3>
+          <div class="price">$19 <span class="old-price">$35</span></div>
+          <a href="#" target="_blank" class="deal-btn">View Deal</a>
+        </div>
+      </div>
+
+      <div class="product-card" data-name="Bluetooth Speaker">
+        <img src="https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?auto=format&fit=crop&w=800&q=80" alt="Bluetooth Speaker">
+        <div class="product-info">
+          <h3>Bluetooth Speaker</h3>
+          <div class="price">$25 <span class="old-price">$45</span></div>
+          <a href="#" target="_blank" class="deal-btn">View Deal</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="categories">
+    <h2 class="section-title">Popular <span>Categories</span></h2>
+    <div class="categories">
+      <div class="category">📱 Electronics</div>
+      <div class="category">👕 Fashion</div>
+      <div class="category">🏠 Home & Living</div>
+      <div class="category">🎮 Gaming</div>
+      <div class="category">⌚ Accessories</div>
+      <div class="category">💄 Beauty</div>
+    </div>
+  </section>
+
+  <section id="about">
+    <h2 class="section-title">Why Choose <span>RolyFy?</span></h2>
+    <div class="why">
+      <div class="why-card">
+        <h3>🔥 Best Deals</h3>
+        <p>Discover trending deals from different online stores.</p>
+      </div>
+      <div class="why-card">
+        <h3>⚡ Easy to Use</h3>
+        <p>Find products quickly and visit the best available deals.</p>
+      </div>
+      <div class="why-card">
+        <h3>🛍️ More Choices</h3>
+        <p>Explore products from multiple categories in one place.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="newsletter">
+      <h2>Never Miss a Deal! 🔥</h2>
+      <p>Get the latest deals directly in your inbox.</p>
+      <input type="email" placeholder="Enter your email">
+      <button onclick="subscribe()">Subscribe</button>
+    </div>
+  </section>
+
+  <footer>
+    <h2>RolyFy</h2>
+    <p>Find. Click. Save.</p>
+    <br>
+    <p>© 2026 RolyFy. All Rights Reserved.</p>
+  </footer>
+
+  <button id="topBtn" onclick="topFunction()">↑</button>
+
+  <script>
+    function toggleDark() {
+      document.body.classList.toggle("dark");
+    }
+
+    function searchProducts() {
+      const input = document.getElementById("searchInput").value.toLowerCase();
+      const products = document.querySelectorAll(".product-card");
+
+      products.forEach(product => {
+        const name = product.dataset.name.toLowerCase();
+        product.style.display = name.includes(input) ? "block" : "none";
+      });
+    }
+
+    window.onscroll = function() {
+      const topBtn = document.getElementById("topBtn");
+      if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+        topBtn.style.display = "block";
+      } else {
+        topBtn.style.display = "none";
+      }
+    };
+
+    function topFunction() {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function subscribe() {
+      alert("Thanks for subscribing to RolyFy! 🎉");
+    }
+  </script>
+
+</body>
+</html>
